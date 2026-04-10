@@ -28,12 +28,13 @@
 </head>
 
 <body>
+    {{ dd(url('/login')) }}
     <div class="card login-card">
         <div class="card-header text-center bg-primary text-white py-3">
             <h4>Login Admin</h4>
         </div>
         <div class="card-body p-4">
-            <form action="{{ url('/login') }}" method="POST">
+            <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label class="form-label">Email</label>
