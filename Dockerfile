@@ -1,28 +1,23 @@
 FROM php:8.2-cli
 
-# Install dependencies
+# Install dependencies + GD extension
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    nodejs npm \
-    && docker-php-ext-install zip pdo pdo_mysql mbstring exif pcntl bcmath gd
+    git unzip curl libpq-dev libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql zip gd
 
-# Install Composer
+# Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
-WORKDIR /var/www
-
-# Copy project
+WORKDIR /app
 COPY . .
 
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Install frontend (kalau pakai Vite)
-RUN npm install && npm run build
+# EXPOSE 8080
 
-# Permission
-RUN chmod -R 777 storage bootstrap/cache
+# CMD php artisan serve --host=0.0.0.0 --port=8080
 
 # Run Laravel
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
