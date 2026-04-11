@@ -2,9 +2,9 @@ FROM php:8.2-cli
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev \
+    git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
     nodejs npm \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+    && docker-php-ext-install zip pdo pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
