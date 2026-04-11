@@ -31,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Asia/Makassar');
         config(['app.timezone' => 'Asia/Makassar']);
         \Carbon\Carbon::setLocale('id');
+         if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }
