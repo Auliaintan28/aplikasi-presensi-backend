@@ -14,10 +14,10 @@ COPY . .
 
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
-
-# EXPOSE 8080
-
-# CMD php artisan serve --host=0.0.0.0 --port=8080
-
-# Run Laravel
-CMD php artisan config:clear && php artisan serve --host=0.0.0.0 --port=$PORT
+RUN chmod -R 777 storage bootstrap/cache
+# Jalankan saat container start
+CMD php artisan config:clear && \
+    php artisan cache:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php artisan serve --host=0.0.0.0 --port=$PORT
